@@ -36,14 +36,18 @@
 
  # Ideal Request 
     
-    {
-    "platforms": {
-        "openai": ["gpt-4.0", "gpt-4.1"],
-        "gemini": ["gemini-pro", "gemini-1.5"],
-        "anthropic": ["claude-3-opus", "claude-3-sonnet"]
-    },
-    "input": "Write a Python function for bubble sort"
-    }
+        {
+        "platforms": {
+            "openai": ["gpt-4", "gpt-3.5-turbo"]
+        },
+        "input": "Write a post about benefits of meditation.",
+        "options": {
+            "tone": "professional",
+            "length": "short"
+        },
+        "history": []
+        }
+
     
  # Response Format
  
