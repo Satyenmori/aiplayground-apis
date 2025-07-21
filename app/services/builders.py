@@ -9,9 +9,31 @@ def build_messages(system_prompt, user_input, options, history):
     messages.append({"role": "user", "content": user_input})
     return messages
 
+# def build_post_prompt(core, options, history):
+#     system = "You are a marketing copywriter."
+#     return build_messages(system, core, options, history)
+
 def build_post_prompt(core, options, history):
-    system = "You are a marketing copywriter."
-    return build_messages(system, core, options, history)
+    tone = options.get("tone", "neutral")
+    length = options.get("length", "medium")
+
+    # Instruction to the AI
+    system = (
+        "You are a professional marketing copywriter. "
+        "Craft compelling, engaging social media posts. "
+        f"Tone: {tone}. Length: {length}. Avoid hashtags unless essential."
+    )
+
+    user_prompt = f"Write a social media post about: {core.strip()}."
+
+    # Optional: Incorporate history if needed
+    messages = [{"role": "system", "content": system}]
+    if history:
+        messages.extend(history)
+    messages.append({"role": "user", "content": user_prompt})
+
+    return messages
+
 
 def build_image_prompt(core, options, history):
     system = "You are an image generation assistant."
