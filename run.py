@@ -1,5 +1,6 @@
 from flask import Flask
 from app.routes.handler import handle_task
+from flask_cors import CORS
 from app.services.builders import (
     build_post_prompt,
     build_image_prompt,
@@ -7,6 +8,7 @@ from app.services.builders import (
 )
 
 app = Flask(__name__)
+CORS(app)
 
 @app.post("/generate-post")
 def generate_post():
