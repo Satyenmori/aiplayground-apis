@@ -16,7 +16,7 @@ def build_messages(system_prompt, user_input, options, history):
 def build_post_prompt(core, options, history):
     tone = options.get("tone", "neutral")
     length = options.get("length", "medium")
-
+    print(f"Building post prompt with tone: {tone}, length: {length}")
     # Instruction to the AI
     system = (
         "You are a professional marketing copywriter. "
@@ -25,7 +25,7 @@ def build_post_prompt(core, options, history):
     )
 
     user_prompt = f"Write a social media post about: {core.strip()}."
-
+    print(f"User prompt: {user_prompt}")
     # Optional: Incorporate history if needed
     messages = [{"role": "system", "content": system}]
     if history:
