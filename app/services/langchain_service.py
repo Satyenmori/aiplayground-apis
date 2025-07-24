@@ -121,7 +121,7 @@ def generate_text_post(state: GraphState):
             response = ask_openai(platform, model, messages) # Ask OpenAI for text generation
             all_outputs.append(response)
 
-    print(f"Generated text posts: {all_outputs}")
+    # print(f"Generated text posts: {all_outputs}")
     return {"posts": all_outputs}
 
 # --- New Node: Generate Image Prompt from Post + Input ---
@@ -132,7 +132,7 @@ def generate_image_prompt(state: GraphState):
 
     # Only generate image prompt if image generation is requested
     if str(options.get("generate_image", "false")).strip().lower() != "true":
-        print("Skipping image prompt generation as 'generate image' option is not true.")
+        # print("Skipping image prompt generation as 'generate image' option is not true.")
         return {"image_prompt_text": None}
 
     # Take the first successful text post to combine with original input
@@ -144,7 +144,7 @@ def generate_image_prompt(state: GraphState):
                 break
     
     if not image_prompt_base_text:
-        print("No valid text post found to generate an image prompt from. Using original input only.")
+        # print("No valid text post found to generate an image prompt from. Using original input only.")
         image_prompt_base_text = user_input # Fallback to original input if no post generated
 
     # Use an LLM to refine the image prompt
@@ -164,10 +164,10 @@ def generate_image_prompt(state: GraphState):
 
     generated_image_prompt = image_prompt_llm_response.get("output")
     if not generated_image_prompt:
-        print("Failed to generate image prompt from LLM. Falling back to original input.")
+        # print("Failed to generate image prompt from LLM. Falling back to original input.")
         generated_image_prompt = user_input # Critical fallback
 
-    print(f"LLM-generated image prompt: {generated_image_prompt[:100]}...")
+    # print(f"LLM-generated image prompt: {generated_image_prompt[:100]}...")
     return {"image_prompt_text": generated_image_prompt}
 
 # --- Node: Generate Image using the LLM-generated prompt ---
@@ -176,7 +176,7 @@ def generate_image(state: GraphState):
     image_prompt_text = state.get("image_prompt_text") # Get the LLM-generated prompt
     
     if not image_prompt_text:
-        print("No image prompt text available. Skipping image generation.")
+        # print("No image prompt text available. Skipping image generation.")
         return {"generated_image": {}}
 
     # Define image generation parameters
@@ -185,7 +185,7 @@ def generate_image(state: GraphState):
     image_quality = "hd" # Can be "standard" or "hd"
     num_images = 1 # DALL-E 3 only supports n=1
 
-    print(f"Attempting to generate image with LLM-refined prompt: {image_prompt_text[:400]}...")
+    # print(f"Attempting to generate image with LLM-refined prompt: {image_prompt_text[:400]}...")
     image_response = ask_openai(
         platform="openai",
         model=image_model_to_use,
@@ -195,7 +195,7 @@ def generate_image(state: GraphState):
         image_quality=image_quality
     )
 
-    print(f"Generated image result: {image_response}")
+    # print(f"Generated image result: {image_response}")
     return {"generated_image": image_response}
 
 
@@ -218,5 +218,5 @@ flow = graph.compile()
 
 def run_generation_flow(payload: Dict):
     result = flow.invoke(payload)
-    print(f"Final LangGraph flow result (from run_generation_flow): {result}")
+    # print(f"Final LangGraph flow result (from run_generation_flow): {result}")
     return result

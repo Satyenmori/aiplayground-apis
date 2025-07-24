@@ -67,7 +67,7 @@ def ask_openai(platform, model, messages, generate_image=False, image_prompt=Non
                 quality=image_quality # Pass the quality parameter
             )
             image_url = response.data[0].url
-            print("✅ Image URL:", image_url)
+            # print("✅ Image URL:", image_url)
             return {
                 "platform": platform,
                 "model": model,
@@ -75,7 +75,7 @@ def ask_openai(platform, model, messages, generate_image=False, image_prompt=Non
                 "generated_prompt": image_prompt # Store the prompt that generated the image
             }
         except Exception as e:
-            print(f"❌ Image generation error for prompt '{image_prompt}': {e}")
+            # print(f"❌ Image generation error for prompt '{image_prompt}': {e}")
             return {
                 "platform": platform,
                 "model": model,
@@ -89,14 +89,14 @@ def ask_openai(platform, model, messages, generate_image=False, image_prompt=Non
             messages=messages
         )
         content = response.choices[0].message.content
-        print("📝 Text response:", content) # Changed print for clarity
+        # print("📝 Text response:", content) # Changed print for clarity
         return {
             "platform": platform,
             "model": model,
             "output": content
         }
     except Exception as e:
-        print("❌ Text generation error:", e)
+        # print("❌ Text generation error:", e)
         return {
             "platform": platform,
             "model": model,

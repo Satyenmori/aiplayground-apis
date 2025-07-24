@@ -19,7 +19,6 @@ def build_post_prompt(input_text: str, options: Dict, history: List[Dict]) -> Li
     # Your existing build_post_prompt logic
     tone = options.get("tone", "neutral")
     length = options.get("length", "medium")
-
     system_message = f"You are a social media manager. Create a social media post with a {tone} tone and {length} length. Include relevant emojis and hashtags."
     user_message = f"Write a social media post about: {input_text}."
 
@@ -27,9 +26,6 @@ def build_post_prompt(input_text: str, options: Dict, history: List[Dict]) -> Li
     for chat_entry in history:
         messages.append({"role": chat_entry["role"], "content": chat_entry["content"]})
     messages.append({"role": "user", "content": user_message})
-
-    print(f"Building post prompt with tone: {tone}, length: {length}")
-    print(f"User prompt: {user_message}")
     return messages
 
 def build_image_prompt_creation_messages(original_input: str, generated_text_post: str) -> List[Dict]:
