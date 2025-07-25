@@ -12,8 +12,18 @@
 
     pip install -r requirements.txt
 
+    pip install fastapi uvicorn
+
 # Running the Code 
-    python run.py
+    <!-- python run.py -->
+    
+    uvicorn main:app --reload --host 0.0.0.0 --port 5000
+
+
+#  With reload 
+
+    uvicorn run:app --reload
+
 
 
 
