@@ -1,27 +1,21 @@
-from flask import Flask
-from flask_cors import CORS
-from app.routes.handler import handle_task
-from app.services.builders import (
-    build_post_prompt,
-    build_image_prompt,
-    build_caption_prompt,
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from app.routes.handler import generate_post, generate_image, generate_caption
+
+app = FastAPI()
+
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Update with allowed origins in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-app = Flask(__name__)
-CORS(app)
+# Routes
+app.post("/generate-post")(generate_post)
+app.post("/generate-image")(generate_image)
+app.post("/generate-caption")(generate_caption)
 
-
-@app.post("/generate-post")
-def generate_post():
-    return handle_task("openai", build_post_prompt)
-
-@app.post("/generate-image")
-def generate_image():
-    return handle_task("openai", build_image_prompt)
-
-@app.post("/generate-caption")
-def generate_caption():
-    return handle_task("openai", build_caption_prompt)
-
-if __name__ == "__main__":
-    app.run(debug=True)
+# Run with: uvicorn main:app --reload
