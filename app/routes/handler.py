@@ -1,6 +1,6 @@
 from fastapi import Request
 from fastapi.responses import JSONResponse
-from app.services.langchain_service import run_generation_flow
+from app.services.generationflow import run_generation_flow
 
 # Shared handler function
 # async def handle_task(request: Request, default_platform: str):
@@ -90,7 +90,7 @@ async def handle_task(request: Request, default_platform: str):
 
         push_image("generated_image")            # standard
         push_image("generated_image_realistic")  # realistic
-
+        
         return JSONResponse(content={"response": response_data})
 
     except Exception as e:

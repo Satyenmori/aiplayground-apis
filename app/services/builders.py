@@ -36,28 +36,33 @@ def build_image_prompt_creation_messages(original_input: str, generated_text_pos
     if for_realistic_image:
         system_message = (
             "You are an expert prompt writer for photorealistic image models. "
-            "Describe a real-life scene that matches the user's topic and post, also use Real Humans with a real background, dnt use any cartoonish background. "
-            "Use concrete details (lighting, location, atmosphere, and the facial expersion of the humans present) and stay under 100 words."
+            "Describe in detail a real-life scene that matches the user's topic and post, also use Real Humans with a real background, don't use any cartoonish background. "
+            "Use concrete details (lighting, location, atmosphere, and the facial expression of the humans present) and stay under 100 words."
         )
-    system_message = (
-        "You are an AI assistant specialized in creating concise and effective prompts for image generation models like DALL-E. "
-        "Your goal is to summarize the core visual concept from the given original request and the generated social media post into a short, descriptive image prompt. "
-        "Focus on key elements that would make a compelling visual."
-        "The prompt should be specific, vivid, and less than 100 words."
-    )
+    else:
+        system_message = (
+            "You are an AI assistant specialized in creating concise and effective prompts for image generation models like DALL-E. "
+            "Your goal is to summarize the core visual concept from the given original request and the generated social media post into a short, descriptive image prompt. "
+            "Focus on key elements that would make a compelling visual. "
+            "The prompt should be specific, vivid, and less than 100 words."
+        )
+
+    # These lines should be OUTSIDE the if/else for system_message,
+    # so they always execute after system_message is set.
     user_message = (
         f"Original user request: '{original_input}'\n\n"
         f"Generated social media post:\n---\n{generated_text_post}\n---\n\n"
-        "Based on these, create a concise image generation prompt (max 100 words)."
-    )   
+        "Based on these, create a concise image generation prompt."
+    )
 
     messages = [
         {"role": "system", "content": system_message},
         {"role": "user", "content": user_message}
     ]
 
-    print(f"Building image prompt creation messages for original input: '{original_input[:50]}...' and post: '{generated_text_post[:50]}...'")
+    # The return statement should also be at this level.
     return messages
+    
 
 def build_image_prompt(core, options, history):
     system = "You are an image generation assistant."

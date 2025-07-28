@@ -60,7 +60,7 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv() 
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 # print(f"OpenAI client initialized with API key: {os.getenv('OPENAI_API_KEY') is not None}")
@@ -71,6 +71,7 @@ def ask_openai(platform, model, messages, generate_image=False, image_prompt=Non
     Generic function to call OpenAI for either text or image generation.
     Image parameters (quality, size, n) are now passed in.
     """
+    # print(f"generate_image: {generate_image}, image_prompt: {image_prompt}, image_quality: {image_quality}, image_size: {image_size}, n: {n}")
     if generate_image:
         try:
             # ✅ Generate image using parameters passed from the LangGraph node
@@ -102,6 +103,7 @@ def ask_openai(platform, model, messages, generate_image=False, image_prompt=Non
             model=model,
             messages=messages
         )
+        # print(f"Response from OpenAI: {response}")  # Debugging line
         content = response.choices[0].message.content
         return {
             "platform": platform,
