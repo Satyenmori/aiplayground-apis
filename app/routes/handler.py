@@ -8,8 +8,8 @@ from app.services.generationflow import run_generation_flow
 #         data = await request.json()
 #         print(f"Received data: {data}")
 
-#         langgraph_result = run_generation_flow(data)
-#         print(f"Final LangGraph flow result: {langgraph_result}")
+#         post_gen_result = run_generation_flow(data)
+#         print(f"Final LangGraph flow result: {post_gen_result}")
 
 #         # Initialize the response dictionary with platform keys
 #         response_data = {p: [] for p in data.get("platforms", {}).keys()}
@@ -17,13 +17,13 @@ from app.services.generationflow import run_generation_flow
 #             response_data = {default_platform: []}
 
 #         # Retrieve the single generated image (if any)
-#         generated_image_info = langgraph_result.get("generated_image", {})
+#         generated_image_info = post_gen_result.get("generated_image", {})
 #         image_url = generated_image_info.get("image_url")
 #         image_platform = generated_image_info.get("platform")
 #         image_model = generated_image_info.get("model")
 
 #         # Populate with text posts
-#         for post in langgraph_result.get("posts", []):
+#         for post in post_gen_result.get("posts", []):
 #             platform = post.get("platform")
 #             if platform in response_data:
 #                 post_entry = {
@@ -58,7 +58,7 @@ from app.services.generationflow import run_generation_flow
 async def handle_task(request: Request, default_platform: str):
     try:
         data = await request.json()
-        langgraph_result = run_generation_flow(data)
+        post_gen_result = run_generation_flow(data)
 
         # 1. prepare platform buckets
         response_data = {p: [] for p in data.get("platforms", {}).keys()}
@@ -66,7 +66,7 @@ async def handle_task(request: Request, default_platform: str):
             response_data = {default_platform: []}
 
         # 2. add text posts (never include an image_url here)
-        for post in langgraph_result.get("posts", []):
+        for post in post_gen_result.get("posts", []):
             platform = post.get("platform")
             if platform in response_data:
                 response_data[platform].append({
@@ -76,7 +76,7 @@ async def handle_task(request: Request, default_platform: str):
 
         # 3. add each generated image as a standalone entry
         def push_image(key: str):
-            info = langgraph_result.get(key, {})
+            info = post_gen_result.get(key, {})
             url  = info.get("image_url")
             if not url:
                 return

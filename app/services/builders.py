@@ -1,4 +1,5 @@
 from typing import List, Dict, Optional
+from app.social.platform_rules import PLATFORM_RULES_WITH_INSIGHT
 
 def build_messages(system_prompt, user_input, options, history):
     messages = [{"role": "system", "content": system_prompt}]
@@ -15,18 +16,54 @@ def build_messages(system_prompt, user_input, options, history):
 #     system = "You are a marketing copywriter."
 #     return build_messages(system, core, options, history)
 
+# def build_post_prompt(input_text: str, options: Dict, history: List[Dict]) -> List[Dict]:
+#     # Your existing build_post_prompt logic
+#     tone = options.get("tone")
+#     length = options.get("length")
+#     social_media = options.get("social_media")
+#     system_message = f"You are a social media manager. Create a social media post with a {tone} tone and {length} length. Include relevant hashtags."
+#     user_message = f"Write a social media post about: {input_text}."
+
+#     messages = [{"role": "system", "content": system_message}]
+#     for chat_entry in history:
+#         messages.append({"role": chat_entry["role"], "content": chat_entry["content"]})
+#     messages.append({"role": "user", "content": user_message})
+#     return messages
+
+
+
 def build_post_prompt(input_text: str, options: Dict, history: List[Dict]) -> List[Dict]:
-    # Your existing build_post_prompt logic
-    tone = options.get("tone", "neutral")
-    length = options.get("length", "medium")
-    system_message = f"You are a social media manager. Create a social media post with a {tone} tone and {length} length. Include relevant hashtags."
+    tone = options.get("tone")
+    length = options.get("length")
+    social_media = options.get("social_media", "").lower()
+    PLATFORM_WITH_INSIGHT = PLATFORM_RULES_WITH_INSIGHT
+
+    # Fallback rule
+    rule = PLATFORM_WITH_INSIGHT.get(social_media, {
+        "text_limit": "N/A",
+        "hashtag_limit": "N/A",
+        "notes": "",
+        "slang": ""
+    })
+
+    # Build system message with platform-specific rules
+    system_message = (
+        f"You are a social media manager crafting posts for {social_media.capitalize()}. "
+        f"Write in a {tone} tone and {length} length. "
+        f"Platform constraints: {rule.get('notes')} "
+        f"Hashtag limit: {rule.get('hashtag_limit')}. "
+        f"Use slang/phrases like: {rule.get('slang')}."
+    )
+
     user_message = f"Write a social media post about: {input_text}."
 
     messages = [{"role": "system", "content": system_message}]
     for chat_entry in history:
         messages.append({"role": chat_entry["role"], "content": chat_entry["content"]})
     messages.append({"role": "user", "content": user_message})
+
     return messages
+
 
 def build_image_prompt_creation_messages(original_input: str, generated_text_post: str, for_realistic_image: bool = False) -> List[Dict]:
     """

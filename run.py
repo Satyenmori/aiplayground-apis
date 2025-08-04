@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.handler import generate_post, generate_image, generate_caption
+from app.social.oAuth import login, callback
 
 app = FastAPI()
 
@@ -17,5 +18,6 @@ app.add_middleware(
 app.post("/generate-post")(generate_post)
 app.post("/generate-image")(generate_image)
 app.post("/generate-caption")(generate_caption)
-
+app.get("/Xlogin")(login)
+app.get("/Xcallback")(callback)
 # Run with: uvicorn main:app --reload

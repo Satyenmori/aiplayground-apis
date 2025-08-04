@@ -8,44 +8,30 @@
     deactivate the environment : 
     deactivate
 
-# Install dependencies
+## Install dependencies
 
     pip install -r requirements.txt
 
     pip install fastapi uvicorn
 
-# Running the Code 
+## Running the Code
     <!-- python run.py -->
     
-    uvicorn main:app --reload --host 0.0.0.0 --port 5000
+    uvicorn run:app --reload --host 0.0.0.0 --port 5000
 
-
-#  With reload 
+## With reload
 
     uvicorn run:app --reload
 
-
-
-
-
-
-
-
-
-
-
-
-
- # Endpoints
+## Endpoints
 
     POST /generate-code
     POST /generate-image
     POST /generate-post
     POST /text-completion
 
+## Ideal Request
 
- # Ideal Request 
-    
         {
         "platforms": {
             "openai": ["gpt-4", "gpt-3.5-turbo"]
@@ -53,14 +39,15 @@
         "input": "Write a post about benefits of meditation.",
         "options": {
             "tone": "professional",
-            "length": "short"
+            "length": "short",
+            "social_media: ["LinkedIn", "Instagram", "facebook"]
         },
         "history": []
         }
 
     
- # Response Format
- 
+## Response Format
+
     {
     "response": {
         "openai": [
@@ -79,6 +66,6 @@
     }
         
 
-  # Concepts
+## Concepts
   
-  Using 'oncurrent.futures.ThreadPoolExecutor' to make simultaneous API calls      
+  Using 'oncurrent.futures.ThreadPoolExecutor' to make simultaneous API calls
